@@ -35,7 +35,7 @@ public class Reservation implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idReservation;
-    private Date stratDate;
+    private Date startDate;
     private Date devolutionDate;
     private String status = "created";
     

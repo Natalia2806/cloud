@@ -87,8 +87,8 @@ public class reservationService {
                 if (reservation.getStatus() != null) {
                     existReservation.get().setStatus(reservation.getStatus());
                 }
-                if (reservation.getStratDate() != null) {
-                    existReservation.get().setStratDate(reservation.getStratDate());
+                if (reservation.getStartDate()!= null) {
+                    existReservation.get().setStartDate(reservation.getStartDate());
                 }
                 return repository.save(existReservation.get());
             } else {
