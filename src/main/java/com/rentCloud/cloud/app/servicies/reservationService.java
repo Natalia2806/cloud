@@ -6,7 +6,13 @@
 package com.rentCloud.cloud.app.servicies;
 
 import com.rentCloud.cloud.app.entities.Reservation;
+import com.rentCloud.cloud.app.repositories.ContadorClientes;
 import com.rentCloud.cloud.app.repositories.reservationRepository;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,4 +118,34 @@ public class reservationService {
         }).orElse(false);
         return response;
     }
+
+    public StatusReservas reporteStatusServicio (){
+        List<Reservation>completed= repository.ReservacionStatusRepositorio("completed");
+        List<Reservation>cancelled= repository.ReservacionStatusRepositorio("cancelled");
+
+        return new StatusReservas(completed.size(), cancelled.size() );
+    }
+
+    public List<Reservation> reporteTiempoServicio (String datoA, String datoB){
+        SimpleDateFormat parser = new SimpleDateFormat ("yyyy-MM-dd");
+
+        Date datoUno = new Date();
+        Date datoDos = new Date();
+
+        try{
+            datoUno = parser.parse(datoA);
+            datoDos = parser.parse(datoB);
+        }catch(ParseException evt){
+            evt.printStackTrace();
+        }if(datoUno.before(datoDos)){
+            return repository.ReservacionTiempoRepositorio(datoUno, datoDos);
+        }else{
+            return new ArrayList<>();
+
+        }
+    }
+    public List<ContadorClientes> reporteClientesServicio(){
+        return repository.getClientesRepositorio();
+    }
+
 }

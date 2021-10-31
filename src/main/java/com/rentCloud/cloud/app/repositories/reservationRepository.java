@@ -5,8 +5,12 @@
  */
 package com.rentCloud.cloud.app.repositories;
 
+import com.rentCloud.cloud.app.entities.Client;
 import com.rentCloud.cloud.app.entities.Reservation;
 import com.rentCloud.cloud.app.repositories.crud.reservationCrudRepository;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +63,24 @@ public class reservationRepository {
     public void delete(Reservation reservation) {
         this.repository.delete(reservation);
     }
+
+    public List<Reservation> ReservacionStatusRepositorio (String status){
+        return this.repository.findAllByStatus(status);
+    }
+
+    public List<Reservation> ReservacionTiempoRepositorio (Date a, Date b){
+        return this.repository.findAllByStartDateAfterAndStartDateBefore(a, b);
+
+    }
+
+    public List<ContadorClientes> getClientesRepositorio(){
+        List<ContadorClientes> res = new ArrayList<>();
+        List<Object[]> report = this.repository.countTotalReservationsByClient();
+        for(int i=0; i<report.size(); i++){
+            res.add(new ContadorClientes((Long)report.get(i)[1],(Client) report.get(i)[0]));
+        }
+        return res;
+    }
+
 
 }
